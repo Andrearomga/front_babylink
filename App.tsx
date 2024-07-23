@@ -1,118 +1,150 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
+// App.js
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import Login from './android/app/src/front_babylink/ui/components/Login';
+import Registro from './android/app/src/front_babylink/ui/components/Registro';
+import Inicio from './android/app/src/front_babylink/ui/components/Inicio';
+import Portada from './android/app/src/front_babylink/ui/components/Portada';
+import Bienvenida from './android/app/src/front_babylink/ui/components/Bienvenida';
+import RegistroBebe from './android/app/src/front_babylink/ui/components/RegistroBebe';
+import Pediatras from './android/app/src/front_babylink/ui/components/Pediatras';
+import ChatPadres from './android/app/src/front_babylink/ui/components/ChatPadres';
+import Notificaciones from './android/app/src/front_babylink/ui/components/Notificaciones';
+import {NotificationProvider} from './android/app/src/front_babylink/ui/components/context/NotificationContext'; // Importar el proveedor de notificaciones
+import CitaMedica from './android/app/src/front_babylink/ui/components/CitaMedica';
+import Vacunacion from './android/app/src/front_babylink/ui/components/Vacunacion';
+import Lista04 from './android/app/src/front_babylink/ui/components/Lista04';
+import Lista06 from './android/app/src/front_babylink/ui/components/Lista06';
+import Lista18 from './android/app/src/front_babylink/ui/components/Lista18';
+import SueñoPrincipal from './android/app/src/front_babylink/ui/components/SueñoPrincipal';
+import PersonalizadoSueno from './android/app/src/front_babylink/ui/components/PersonalizadoSueno';
+import ListaSueno from './android/app/src/front_babylink/ui/components/ListaSueno';
+import Alimentacion from './android/app/src/front_babylink/ui/components/Alimentacion';
+import AlimentoList from './android/app/src/front_babylink/ui/components/AlimentoList';
+import AgregarAlimento from './android/app/src/front_babylink/ui/components/AgregarAlimento';
+import Menu from './android/app/src/front_babylink/ui/components/Menu';
+import RegistroCita from './android/app/src/front_babylink/ui/components/RegistroCita';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const Stack = createStackNavigator();
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const App = () => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <NotificationProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen
+            name="Portada"
+            component={Portada}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Registro"
+            component={Registro}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen name="Inicio" component={Inicio} />
+          <Stack.Screen
+            name="Bienvenida"
+            component={Bienvenida}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="RegistroBebe"
+            component={RegistroBebe}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Pediatras"
+            component={Pediatras}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ChatPadres"
+            component={ChatPadres}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Notificaciones"
+            component={Notificaciones}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Cita Medica"
+            component={CitaMedica}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Vacunacion"
+            component={Vacunacion}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Lista04"
+            component={Lista04}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Lista06"
+            component={Lista06}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Lista18"
+            component={Lista18}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SueñoPrincipal"
+            component={SueñoPrincipal}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ListaSueno"
+            component={ListaSueno}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="PersonalizadoSueno"
+            component={PersonalizadoSueno}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Alimentacion"
+            component={Alimentacion}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="AlimentoList"
+            component={AlimentoList}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="AgregarAlimento"
+            component={AgregarAlimento}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Menu"
+            component={Menu}
+            options={{headerShown: false}}
+          />
+
+           <Stack.Screen 
+         name="RegistroCita" 
+          component={RegistroCita} 
+          options={{ headerShown: false }} 
+        /> 
+        </Stack.Navigator>
+      </NavigationContainer>
+    </NotificationProvider>
   );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+};
 
 export default App;
