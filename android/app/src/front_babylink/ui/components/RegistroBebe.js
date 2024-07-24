@@ -76,7 +76,7 @@ const RegistroBebe = () => {
       const IdUser = parsedUsuario.IdUser ?? 0;
    
       let IdBaby = 0;
-    //  console.log(bebe)
+     console.log({bebe})
       if (bebe!== undefined) {
         IdBaby = bebe.IdBaby;
       }
@@ -90,7 +90,7 @@ const RegistroBebe = () => {
         weight: peso,
         height: estatura,
       };
-
+      console.log({baby})
       let responseBaby = await BabyService.guardar(baby);
 
       await AsyncStorage.setItem('bebe', JSON.stringify(responseBaby.value));

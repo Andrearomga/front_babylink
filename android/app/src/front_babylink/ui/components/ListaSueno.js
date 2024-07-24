@@ -14,6 +14,7 @@ import Modal from 'react-native-modal';
 import {Button} from 'react-native-paper';
 import DreamService from '../../infrastructure/repositories/ApiDreamRepository';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 const {width} = Dimensions.get('window');
 
@@ -28,23 +29,32 @@ const ListaSueno = ({route, navigation}) => {
 
   const [IdDream, setIdDream] = useState(0);
 
-  useEffect(() => {
-    // Definir la función que se ejecutará cada segundo
+  // useEffect(() => {
+  //   // Definir la función que se ejecutará cada segundo
 
-    // Configurar el intervalo para ejecutar listarSuenos cada segundo
-    // const intervalId = setInterval(listarSuenos, 1000);
+  //   // Configurar el intervalo para ejecutar listarSuenos cada segundo
+  //   // const intervalId = setInterval(listarSuenos, 1000);
 
-    // Limpiar el intervalo cuando el componente se desmonte
-    // return () => clearInterval(intervalId);
-    listarSuenos();
-    intervar();
-  }, []);
-  const intervar = () => {
-    setInterval(() => {
-      // console.log("interval")
+  //   // Limpiar el intervalo cuando el componente se desmonte
+  //   // return () => clearInterval(intervalId);
+  //   listarSuenos();
+  //   // intervar();
+  // }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
       listarSuenos();
-    }, 5000);
-  };
+
+      return () => {};
+    }, []),
+  );
+
+  // const // intervar = () => {
+  //   setInterval(() => {
+  //     // console.log("interval")
+  //     listarSuenos();
+  //   }, 60000);
+  // };
   const listarSuenos = async () => {
     let baby = await AsyncStorage.getItem('bebe');
     baby = JSON.parse(baby);

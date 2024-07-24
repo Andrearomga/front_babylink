@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Image, StyleSheet, PanResponder } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SueñoPrincipal = () => {
@@ -24,18 +24,18 @@ const SueñoPrincipal = () => {
 
     
   
-    useEffect(() => {
-      updateCurrentTime();
+    // useEffect(() => {
+    //   updateCurrentTime();
   
-      const now = new Date();
-      const secondsUntilNextMinute = 60 - now.getSeconds();
-      const timeoutId = setTimeout(() => {
-        updateCurrentTime();
-        const intervalId = setInterval(updateCurrentTime, 60000);
-        return () => clearInterval(intervalId);
-      }, secondsUntilNextMinute * 1000);
-      return () => clearTimeout(timeoutId);
-    }, []);
+    //   const now = new Date();
+    //   const secondsUntilNextMinute = 60 - now.getSeconds();
+    //   const timeoutId = setTimeout(() => {
+    //     updateCurrentTime();
+    //     const intervalId = setInterval(updateCurrentTime, 60000);
+    //     return () => clearInterval(intervalId);
+    //   }, secondsUntilNextMinute * 60000);
+    //   return () => clearTimeout(timeoutId);
+    // }, []);
   
 
     const cargarDatos = async () => {
@@ -51,9 +51,19 @@ const SueñoPrincipal = () => {
         console.error('Error al cargar los datos:', error);
       }
     };
-    useEffect(() => {
-      cargarDatos();
-    }, []);
+    // useEffect(() => {
+    //   cargarDatos();
+    // }, []);
+    useFocusEffect(
+      React.useCallback(() => {
+      
+        cargarDatos();
+  
+        return () => {
+          
+        };
+      }, []),
+    );
   
     const panResponder = useRef(
       PanResponder.create({

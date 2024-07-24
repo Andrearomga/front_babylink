@@ -62,17 +62,17 @@ const PersonalizadoSueno = ({navigation, route}) => {
     setCurrentTime(`${String(hours).padStart(2, '0')}:${minutes} ${ampm}`);
   };
 
-  useEffect(() => {
-    updateCurrentTime();
-    const now = new Date();
-    const secondsUntilNextMinute = 60 - now.getSeconds();
-    const timeoutId = setTimeout(() => {
-      updateCurrentTime();
-      const intervalId = setInterval(updateCurrentTime, 60000);
-      return () => clearInterval(intervalId);
-    }, secondsUntilNextMinute * 1000);
-    return () => clearTimeout(timeoutId);
-  }, []);
+  // useEffect(() => {
+  //   updateCurrentTime();
+  //   const now = new Date();
+  //   const secondsUntilNextMinute = 60 - now.getSeconds();
+  //   const timeoutId = setTimeout(() => {
+  //     updateCurrentTime();
+  //     const intervalId = setInterval(updateCurrentTime, 60000);
+  //     return () => clearInterval(intervalId);
+  //   }, secondsUntilNextMinute * 60000);
+  //   return () => clearTimeout(timeoutId);
+  // }, []);
 
   useEffect(() => {}, []);
 

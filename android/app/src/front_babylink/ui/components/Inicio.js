@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import Svg, {Text as SvgText, Image as SvgImage, Rect} from 'react-native-svg';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BabyService from '../../infrastructure/repositories/ApiBbayRepositor';
 import io from 'socket.io-client';
@@ -26,25 +26,39 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
   const [fechaNacimientoBebe, setFechaNacimientoBebe] = useState('');
   const [bebe, setBebe] = useState({});
 
-  useEffect(() => {
-    cargarDatos();
-    cargarDataFire();
-    socket.on('guardarBebe', async newRecord => {
-      cargarDatos();
-    });
-    intervar();
-  }, []);
+  // useEffect(() => {
+  //   cargarDatos();
+  //   cargarDataFire();
+  //   socket.on('guardarBebe', async newRecord => {
+  //     cargarDatos();
+  //   });
+  //   // intervar();
+  // }, []);
 
-  const intervar = () => {
-    setInterval(() => {
-      // console.log("interval al")
+  useFocusEffect(
+    React.useCallback(() => {
       cargarDatos();
-    }, 1000);
-  };
+      // cargarDataFire();
+      socket.on('guardarBebe', async newRecord => {
+        cargarDatos();
+      });
+
+      return () => {};
+    }, []),
+  );
+
+  // cargarDatos();
+
+  // const // intervar = () => {
+  //   setInterval(() => {
+  //     // console.log("interval al")
+  //     cargarDatos();
+  //   }, 60000);
+  // };
 
   const cargarDataFire = () => {};
 
-  const actualizarDatos = async () =>{
+  const actualizarDatos = async () => {
     //logica para actualizar
     try {
       let usuario = await AsyncStorage.getItem('usuario');
@@ -63,11 +77,8 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
         console.log('Datos actualizados exitosamente:', response.value);
       }
     } catch (error) {
-     // console.error('Error al actualizar los datos:', error);
+      // console.error('Error al actualizar los datos:', error);
     }
-
-  
-
   };
 
   const cargarDatos = async () => {
@@ -90,7 +101,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
       }
 
       actualizarDatos();
-     // console.log('Actualizando')
+      // console.log('Actualizando')
     } catch (error) {
       console.error('Error al cargar los datos:', error);
     }
@@ -98,11 +109,11 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
 
   // Este useEffect se asegura de que el componente se actualice cuando los datos del bebé cambien
   useEffect(() => {
-   // console.log('Datos del bebé actualizados', { nombreBebe, pesoBebe, estaturaBebe, fechaNacimientoBebe });
+    // console.log('Datos del bebé actualizados', { nombreBebe, pesoBebe, estaturaBebe, fechaNacimientoBebe });
   }, [nombreBebe, pesoBebe, estaturaBebe, fechaNacimientoBebe]);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <View style={styles.container}>
         <Svg height="1001" width="543" style={styles.svgContainer}>
           <SvgText
@@ -111,8 +122,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
             fill="#000"
             fontSize="24"
             fontFamily="Urbanist-Bold"
-            textAnchor="start"
-          >
+            textAnchor="start">
             {`${usuarioNombre}`}
           </SvgText>
           <Rect
@@ -146,8 +156,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
             y="140"
             fill="#FFF"
             fontSize="23"
-            fontWeight="bold"
-          >
+            fontWeight="bold">
             {`${nombreBebe}`}
           </SvgText>
           <SvgText x="101.5" y="200" fill="#FFF" fontSize="20">
@@ -165,9 +174,8 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
         <TouchableOpacity
           style={styles.editButton}
           onPress={async () => {
-            await navigation.navigate('RegistroBebe', { bebe });
-          }}
-        >
+            await navigation.navigate('RegistroBebe', {bebe});
+          }}>
           <View style={styles.editButtonContent}>
             <RNImage
               source={require('../../assets/images/edit_icon.png')}
@@ -179,8 +187,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
         <View style={styles.cardsContainer}>
           <TouchableOpacity
             style={styles.cardButton}
-            onPress={() => navigation.navigate('RegistroCita')}
-          >
+            onPress={() => navigation.navigate('RegistroCita')}>
             <Svg height="150" width="150">
               <Rect
                 x="0"
@@ -204,8 +211,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
                 fill="#000"
                 fontSize="14"
                 fontWeight="bold"
-                textAnchor="middle"
-              >
+                textAnchor="middle">
                 Cita Médica
               </SvgText>
             </Svg>
@@ -213,8 +219,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
 
           <TouchableOpacity
             style={styles.cardButton}
-            onPress={() => navigation.navigate('Vacunacion')}
-          >
+            onPress={() => navigation.navigate('Vacunacion')}>
             <Svg height="150" width="150">
               <Rect
                 x="0"
@@ -238,8 +243,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
                 fill="#000"
                 fontSize="14"
                 fontWeight="bold"
-                textAnchor="middle"
-              >
+                textAnchor="middle">
                 Vacunación
               </SvgText>
             </Svg>
@@ -247,8 +251,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
 
           <TouchableOpacity
             style={styles.cardButton}
-            onPress={() => navigation.navigate('SueñoPrincipal')}
-          >
+            onPress={() => navigation.navigate('SueñoPrincipal')}>
             <Svg height="150" width="150">
               <Rect
                 x="0"
@@ -272,8 +275,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
                 fill="#000"
                 fontSize="14"
                 fontWeight="bold"
-                textAnchor="middle"
-              >
+                textAnchor="middle">
                 Sueño
               </SvgText>
             </Svg>
@@ -281,8 +283,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
 
           <TouchableOpacity
             style={styles.cardButton}
-            onPress={() => navigation.navigate('Alimentacion')}
-          >
+            onPress={() => navigation.navigate('Alimentacion')}>
             <Svg height="150" width="150">
               <Rect
                 x="0"
@@ -300,15 +301,14 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
                 height="50"
                 href={require('../../assets/images/alimentacion.png')}
               />
-             
-             <SvgText
+
+              <SvgText
                 x="75"
                 y="120"
                 fill="#000"
                 fontSize="14"
                 fontWeight="bold"
-                textAnchor="middle"
-              >
+                textAnchor="middle">
                 Alimentación
               </SvgText>
             </Svg>
@@ -320,8 +320,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
       <View style={styles.bottomTabContainer}>
         <TouchableOpacity
           style={styles.tabButton}
-          onPress={() => navigation.navigate('Usuario')}
-        >
+          onPress={() => navigation.navigate('Menu')}>
           <RNImage
             source={require('../../assets/images/Usuario.png')}
             style={styles.tabIcon}
@@ -329,8 +328,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.tabButton}
-          onPress={() => navigation.navigate('Notificaciones')}
-        >
+          onPress={() => navigation.navigate('Notificaciones')}>
           <RNImage
             source={require('../../assets/images/notificaciones.png')}
             style={styles.tabIcon}
@@ -344,8 +342,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.tabButton}
-          onPress={() => navigation.navigate('ChatPadres')}
-        >
+          onPress={() => navigation.navigate('ChatPadres')}>
           <RNImage
             source={require('../../assets/images/comentarios.png')}
             style={styles.tabIcon}
@@ -353,8 +350,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.tabButton}
-          onPress={() => navigation.navigate('Pediatras')}
-        >
+          onPress={() => navigation.navigate('Pediatras')}>
           <RNImage
             source={require('../../assets/images/doctores.png')}
             style={styles.tabIcon}
@@ -365,8 +361,7 @@ const Inicio = ({nombreUsuario = 'Invitado'}) => {
       {/* Logo del menú */}
       <TouchableOpacity
         style={styles.tabIcon1}
-        onPress={() => navigation.navigate('Menu')}
-      >
+        onPress={() => navigation.navigate('Menu')}>
         <RNImage
           source={require('../../assets/images/menu.png')}
           style={styles.menuLogo}
@@ -436,7 +431,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 5,

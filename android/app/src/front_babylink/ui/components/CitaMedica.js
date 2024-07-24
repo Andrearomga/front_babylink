@@ -82,9 +82,7 @@ const CitaMedica = () => {
         storage = await AsyncStorage.getItem('bebe');
         bebe = JSON.parse(storage);
         IdBaby = bebe.IdBaby;
-      } catch (error) {
-        
-      }
+      } catch (error) {}
 
       const newCita = {
         IdMedicalAppointment: 0,
@@ -95,7 +93,7 @@ const CitaMedica = () => {
         date: selectedDate.toISOString().split('T')[0],
       };
       const response = await CitasMedicasServices.guardar(newCita);
-  
+
       // Llamada a la API para guardar la cita
       // fetch('https://tu-api-url.com/citas', {
       //   method: 'POST',

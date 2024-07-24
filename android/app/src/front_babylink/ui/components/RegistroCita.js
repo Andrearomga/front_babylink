@@ -14,6 +14,7 @@ import {Button} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import CitasMedicasServices from '../../infrastructure/repositories/CitasMedicasServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 import io from 'socket.io-client';
 
 const socket = io('http://192.168.0.24:3000');
@@ -57,21 +58,32 @@ const RegistroCita = () => {
     navigation.navigate('Menu');
   };
 
-  useEffect(() => {
-    listarCitasMedicas();
-    cargarDatos();
-    // socket.on('guardarCitaMedica', async newRecord => {
-    //   listarCitasMedicas();
-    // });
-    intervar()
-  }, []);
+  // useEffect(() => {
+  //   listarCitasMedicas();
+  //   cargarDatos();
+  //   // socket.on('guardarCitaMedica', async newRecord => {
+  //   //   listarCitasMedicas();
+  //   // });
+  //   // intervar();
+  // }, []);
 
-  const intervar = () => {
-    setInterval(() => {
-      // console.log("interval")
+  useFocusEffect(
+    React.useCallback(() => {
       listarCitasMedicas();
-    }, 5000);
-  };
+      cargarDatos();
+
+      return () => {
+        
+      };
+    }, []),
+  );
+
+  // const // intervar = () => {
+  //   setInterval(() => {
+  //     // console.log("interval")
+  //     listarCitasMedicas();
+  //   }, 60000);
+  // };
 
   const cargarDatos = async () => {
     let usuario = await AsyncStorage.getItem('usuario');
@@ -84,18 +96,15 @@ const RegistroCita = () => {
       let bebe = await AsyncStorage.getItem('bebe');
       bebe = JSON.parse(bebe);
       let IdBaby = bebe.IdBaby;
-  
+
       const response = await CitasMedicasServices.list(IdBaby);
-  
-      
-       setCitasData(response.value);
-      
+      console.log(response.value);
+      if (response.value === true) return;
+      setCitasData(response.value);
     } catch (error) {
-      //console.log({ error }, 'pss');
+      console.log({error});
     }
   };
-  
-  
 
   return (
     <View style={styles.container}>

@@ -5,36 +5,41 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const service = '/community/medical-appointment';
 const url = `${baseURL}${service}`;
 
-const guardar = async (medicalAppointment) => {
-  let usuario = await AsyncStorage.getItem('usuario');
-  usuario = JSON.parse(usuario);
-  const token = usuario.token;
-
-  const response = await axios({
-    url: `${url}/save`,
-    method: 'POST',
-    headers: {
-      token,
-    },
-    data: {
-      medicalAppointment,
-    },
-  });
-
-  return response.data;
+const guardar = async medicalAppointment => {
+  console.log('Guardando cita medica');
+  
+  try {
+    let usuario = await AsyncStorage.getItem('usuario');
+    usuario = JSON.parse(usuario);
+    const token = usuario.token;
+    console.log({medicalAppointment});
+    const response = await axios({
+      url: `${url}/save`,
+      method: 'POST',
+      headers: {
+        token,
+      },
+      data: {
+        medicalAppointment,
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    // console.log({error});
+  }
 };
 
 const list = async IdBaby => {
   //llamar al storage del bebe
- 
 
-  let usuario = await AsyncStorage.getItem('usuario');
-  usuario = JSON.parse(usuario);
-  const token = usuario.token;
-
-  let response;
-  
- 
+  try {
+    let usuario = await AsyncStorage.getItem('usuario');
+    usuario = JSON.parse(usuario);
+    const token = usuario.token;
+    console.log('Listnado');
+    let response;
+    console.log({url: `${url}/list/${IdBaby}`});
     response = await axios({
       url: `${url}/list/${IdBaby}`,
       method: 'GET',
@@ -42,12 +47,14 @@ const list = async IdBaby => {
         token,
       },
     });
-    return response.data;  // Devuelve directamente response.data si la petición fue exitosa
-
-  
+    console.log(response.data.value)
+    return response.data;
+  } catch (error) {
+    // console.log({error});
+  }
 };
 
-const deletes = async (id) => {
+const deletes = async id => {
   let usuario = await AsyncStorage.getItem('usuario');
   const token = usuario.token;
 

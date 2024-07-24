@@ -11,6 +11,7 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AlimentacionService from '../../infrastructure/repositories/ApiAlimentacionRepository';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 const AlimentoList = ({navigation}) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -25,23 +26,34 @@ const AlimentoList = ({navigation}) => {
 
   const handleDelete = async () => {
     // Aquí puedes manejar la eliminación del elemento
-   
+
     await AlimentacionService.deletes(selectedItem.IdFeeding);
-    listarAlimentacion()
+    listarAlimentacion();
     setModalVisible(false);
   };
 
-  useEffect(() => {
+/*   useEffect(() => {
     listarAlimentacion();
-    intervar()
+    // intervar();
   }, []);
-
-  const intervar = () => {
-    setInterval(() => {
-      // console.log("interval al")
+ */
+  
+  useFocusEffect(
+    React.useCallback(() => {
       listarAlimentacion();
-    }, 5000);
-  };
+
+      return () => {};
+    }, []),
+  );
+
+
+
+  // const // intervar = () => {
+  //   setInterval(() => {
+  //     // console.log("interval al")
+  //     listarAlimentacion();
+  //   }, 60000);
+  // };
 
   const listarAlimentacion = async () => {
     try {
@@ -49,11 +61,9 @@ const AlimentoList = ({navigation}) => {
       bebe = JSON.parse(bebe);
       const IdBaby = bebe.IdBaby;
       const response = await AlimentacionService.list(IdBaby);
-      
+
       setFeedingData(response.value);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const renderFeedingItem = ({item}) => (

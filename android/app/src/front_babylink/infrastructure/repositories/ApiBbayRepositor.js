@@ -6,22 +6,30 @@ const service = '/information-management/baby';
 const url = `${baseURL}${service}`;
 
 const guardar = async baby => {
-  let usuario = await AsyncStorage.getItem('usuario');
+  try {
+    let usuario = await AsyncStorage.getItem('usuario');
+    usuario = JSON.parse(usuario);
+    const token = usuario.token;
+    console.log({url: `${url}/save`})
+    const response = await axios({
+      url: `${url}/save`,
+      method: 'POST',
+      headers: {
+        token,
+      },
+      data: {
+        baby,
+      },
+    });
+  
+    return response.data;
+  } catch (error) {
+    // console.log("Guardar baby")
+    // console.log({error})
+  }
+ 
 
-  usuario = JSON.parse(usuario);
-  const token = usuario.token;
-  const response = await axios({
-    url: `${url}/save`,
-    method: 'POST',
-    headers: {
-      token,
-    },
-    data: {
-      baby,
-    },
-  });
-
-  return response.data;
+ 
 };
 
 const getBabyById = async IdUser => {

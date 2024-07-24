@@ -9,7 +9,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native'; // Importar useNavigation
+import {useFocusEffect, useNavigation} from '@react-navigation/native'; // Importar useNavigation
 import ChatService from '../../infrastructure/repositories/ApiChatService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -38,7 +38,7 @@ const ChatPadres = () => {
     setMensajes([...mensajes, nuevoMensaje]);
   };
 
-  // Simulación de mensaje recibido después de 5 segundos
+ /*  // Simulación de mensaje recibido después de 5 segundos
   useEffect(() => {
     // const intervalId = setInterval(() => {
     //   cargarMensajes();
@@ -60,7 +60,25 @@ const ChatPadres = () => {
       socket.off('newRecord');
       socket.disconnect();
     };
-  }, []);
+  }, []); */
+  useFocusEffect(
+    React.useCallback(() => {
+      socket.on('connection', () => {
+      });
+  
+      cargarMensajes();
+      socket.on('newRecord', async newRecord => {
+        cargarMensajes()
+      });
+  
+      // Cleanup the socket connection on unmount
+      return () => {
+        socket.off('newRecord');
+        socket.disconnect();
+      };
+    }, []),
+  );
+
 
   const obtenerFechaFormateada = () => {
     const fecha = new Date();
